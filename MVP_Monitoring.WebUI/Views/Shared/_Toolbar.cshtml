@@ -1,14 +1,16 @@
-﻿				<!--begin::Toolbar-->
+﻿@model MVP_Monitoring.WebUI.Models.BreadcrumbViewModel
+
+<!--begin::Toolbar-->
 <div class="toolbar py-5 pb-lg-15" id="kt_toolbar">
 	<!--begin::Container-->
 	<div id="kt_toolbar_container" class="container-xxl d-flex flex-stack flex-wrap">
 		<!--begin::Page title-->
 		<div class="page-title d-flex flex-column me-3">
 			<!--begin::Title-->
-			<h1 class="d-flex text-white fw-bold my-1 fs-3">داشبورد</h1>
+			<h1 class="d-flex text-white fw-bold my-1 fs-3">@Model.Title</h1>
 			<!--end::Title-->
-			<!--begin::Breadcrumb-->
-			@* <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-1">
+			@* <!--begin::Breadcrumb-->
+			<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-1">
 				<!--begin::item-->
 				<li class="breadcrumb-item text-white opacity-75">
 					<a href="../../demo2/dist/index.html" class="text-white text-hover-primary">خانه</a>
@@ -30,8 +32,8 @@
 				<!--begin::item-->
 				<li class="breadcrumb-item text-white opacity-75">پیش فرض</li>
 				<!--end::item-->
-			</ul> *@
-			<!--end::Breadcrumb-->
+			</ul>
+			<!--end::Breadcrumb--> *@
 		</div>
 		<!--end::Page title-->
 	</div>

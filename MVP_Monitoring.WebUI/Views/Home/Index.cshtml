@@ -1,4 +1,8 @@
-﻿					<!--begin::Post-->
+﻿@await Html.PartialAsync("_Toolbar", new BreadcrumbViewModel { Title = "داشبورد" })
+
+<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
+
+					<!--begin::Post-->
 <div class="content flex-row-fluid" id="kt_content">
 	<!--begin::Row-->
 	<div class="row g-5 g-xl-8">
@@ -1931,3 +1935,4 @@
 	<!--end::Row-->
 </div>
 <!--end::Post-->
+</div>

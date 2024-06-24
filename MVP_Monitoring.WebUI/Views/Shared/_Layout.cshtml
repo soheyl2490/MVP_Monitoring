@@ -55,11 +55,9 @@ Like: www.facebook.com/keenthemes
 			<!--begin::Wrapper-->
 			<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 				@await Html.PartialAsync("_Header")
-				@await Html.PartialAsync("_Toolbar")
 				<!--begin::Container-->
-				<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
+				
 					@RenderBody()
-				</div>
 				<!--end::Container-->
 				@await Html.PartialAsync("_Footer")
 			</div>

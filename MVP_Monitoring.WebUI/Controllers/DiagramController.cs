@@ -4,7 +4,12 @@ namespace MVP_Monitoring.WebUI.Controllers
 {
     public class DiagramController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> DeviceItems(long id)
         {
             return View();
         }
