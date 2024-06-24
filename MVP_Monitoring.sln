@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVP_Monitoring.Application", "MVP_Monitoring.Application\MVP_Monitoring.Application.csproj", "{B6ECBC94-446E-4568-94BB-2E37EA0ADB62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVP_Monitoring.Application", "MVP_Monitoring.Application\MVP_Monitoring.Application.csproj", "{B6ECBC94-446E-4568-94BB-2E37EA0ADB62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVP_Monitoring.Domain", "MVP_Monitoring.Domain\MVP_Monitoring.Domain.csproj", "{BAB014EE-1C9B-4B5A-AE89-0656EF582F23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVP_Monitoring.Domain", "MVP_Monitoring.Domain\MVP_Monitoring.Domain.csproj", "{BAB014EE-1C9B-4B5A-AE89-0656EF582F23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVP_Monitoring.Infra.Data", "MVP_Monitoring.Infra.Data\MVP_Monitoring.Infra.Data.csproj", "{B6C66AF9-A29B-47AF-B651-4FA784FEBF09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVP_Monitoring.Infra.Data", "MVP_Monitoring.Infra.Data\MVP_Monitoring.Infra.Data.csproj", "{B6C66AF9-A29B-47AF-B651-4FA784FEBF09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVP_Monitoring.Infra.IoC", "MVP_Monitoring.Infra.IoC\MVP_Monitoring.Infra.IoC.csproj", "{B05920CD-F03D-47D3-8B3F-5D9C3CBD5248}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVP_Monitoring.Infra.IoC", "MVP_Monitoring.Infra.IoC\MVP_Monitoring.Infra.IoC.csproj", "{B05920CD-F03D-47D3-8B3F-5D9C3CBD5248}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVP_Monitoring.WebApi", "MVP_Monitoring.WebApi\MVP_Monitoring.WebApi.csproj", "{D88D58B5-45BB-46AA-B0D7-A1FB0EA44F1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVP_Monitoring.WebUI", "MVP_Monitoring.WebUI\MVP_Monitoring.WebUI.csproj", "{3AE5B83B-F8EF-4BC9-B530-6DFAEAE1BC0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{B05920CD-F03D-47D3-8B3F-5D9C3CBD5248}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B05920CD-F03D-47D3-8B3F-5D9C3CBD5248}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B05920CD-F03D-47D3-8B3F-5D9C3CBD5248}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D88D58B5-45BB-46AA-B0D7-A1FB0EA44F1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D88D58B5-45BB-46AA-B0D7-A1FB0EA44F1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D88D58B5-45BB-46AA-B0D7-A1FB0EA44F1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D88D58B5-45BB-46AA-B0D7-A1FB0EA44F1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AE5B83B-F8EF-4BC9-B530-6DFAEAE1BC0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AE5B83B-F8EF-4BC9-B530-6DFAEAE1BC0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AE5B83B-F8EF-4BC9-B530-6DFAEAE1BC0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AE5B83B-F8EF-4BC9-B530-6DFAEAE1BC0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
