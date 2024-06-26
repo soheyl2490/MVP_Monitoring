@@ -19,7 +19,8 @@ namespace MVP_Monitoring.Domain.Entities
         #region Relation
 
         public List<DeviceItem> DeviceItems { get; set; }
-        
+
+        public string Logo { get; set; }
         #endregion
     }
 }

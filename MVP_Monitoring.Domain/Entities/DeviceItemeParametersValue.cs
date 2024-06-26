@@ -10,11 +10,11 @@ namespace MVP_Monitoring.Domain.Entities
 {
     public class DeviceItemParametersValue : BaseEntity
     {
-        public int DeviceItemId { get; set; }
+        public long DeviceItemId { get; set; }
 
         public int Temperature { get; set; }
 
-        public int Rotationalspeed { get; set; }
+        public int RotationSpeed { get; set; }
 
         public int MotorFlow { get; set; }
 

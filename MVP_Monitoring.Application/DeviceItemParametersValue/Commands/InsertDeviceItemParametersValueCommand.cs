@@ -13,7 +13,7 @@ namespace MVP_Monitoring.Application.DeviceItemParametersValue.Commands
 
         public int Temperature { get; set; }
 
-        public int Rotationalspeed { get; set; }
+        public int RotationSpeed { get; set; }
 
         public int MotorFlow { get; set; }
 

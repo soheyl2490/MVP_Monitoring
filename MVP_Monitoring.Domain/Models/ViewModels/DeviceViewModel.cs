@@ -14,5 +14,11 @@ namespace MVP_Monitoring.Domain.Models.ViewModels
         public string Descriptions { get; set; }
 
         public long? ParentId { get; set; }
+
+        public string Logo { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
+        public string PersianCreateDate { get; set; }
     }
 }
