@@ -13,44 +13,26 @@ using MVP_Monitoring.Domain.Models.ViewModels;
 
 namespace MVP_Monitoring.Application.DeviceItemParametersValue.QueryHandler
 {
-    public class GetDeviceItemParametersValueListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IQueryHandler<GetDeviceItemParametersValueListQuery, PagingViewModel<DeviceItemParametersValueListViewModel>>
+    public class GetDeviceItemParametersValueListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IQueryHandler<GetDeviceItemParametersValueListQuery, PagingViewModel<DeviceItemParametersValueViewModel>>
     {
-        public async Task<Result<PagingViewModel<DeviceItemParametersValueListViewModel>>> Handle(GetDeviceItemParametersValueListQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PagingViewModel<DeviceItemParametersValueViewModel>>> Handle(GetDeviceItemParametersValueListQuery request, CancellationToken cancellationToken)
         {
-            var result = new Result<PagingViewModel<DeviceItemParametersValueListViewModel>>();
+            var result = new Result<PagingViewModel<DeviceItemParametersValueViewModel>>();
 
             var take = 10;
             IList<Domain.Entities.DeviceItemParametersValue> entity;
             var count = 0;
-            //if (request.Page == -1)
-            //{
-                entity = await unitOfWork.DeviceItemParametersValue
-                   .GetAllAsync();
-            //}
-            //else
-            //{
-            //    entity = await unitOfWork.Groups
-            //    .GetManyAsync(p => !string.IsNullOrWhiteSpace(request.Filter) ?
-            //    p.Name.Contains(request.Filter) ||
-            //    p.Code.Contains(request.Filter) : true
-            //    , request.Page.CalculateSkip(take), take);
-
-            //    count = await unitOfWork.Groups
-            //        .GetCountAsync(p => !string.IsNullOrWhiteSpace(request.Filter) ?
-            //        p.Name.Contains(request.Filter) ||
-            //        p.Code.Contains(request.Filter) : true);
-
-            //}
+            entity = await unitOfWork.DeviceItemParametersValue
+                .GetAllAsync();
             var viewModel = mapper
-                .Map<List<DeviceItemParametersValueListViewModel>>(entity.OrderByDescending(p => p.Id));
-
-            result.WithValue(new PagingViewModel<DeviceItemParametersValueListViewModel>()
+                .Map<List<DeviceItemParametersValueViewModel>>(entity.OrderByDescending(p => p.Id));
+            result.WithValue(new PagingViewModel<DeviceItemParametersValueViewModel>()
             {
-                PageCount = count.CalculatePageCount(take),
+                //PageCount = count.CalculatePageCount(take),
                 Results = viewModel
             });
-
             return result;
         }
     }
 }
+

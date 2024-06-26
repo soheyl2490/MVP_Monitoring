@@ -1,4 +1,21 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using MVP_Monitoring.Infra.IoC;
+
 var builder = WebApplication.CreateBuilder(args);
+
+DependencyContainer.ConfigureServices(builder.Configuration, builder.Services);
+
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+    options.SlidingExpiration = true;
+    options.AccessDeniedPath = "/Forbidden/";
+});
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -19,9 +36,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
-app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapDefaultControllerRoute();
+//app.MapControllerRoute(
+//	name: "default",
+//	pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

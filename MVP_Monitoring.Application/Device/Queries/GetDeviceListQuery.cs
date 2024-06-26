@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MVP_Monitoring.Application.Device.Queries
 {
-    public class GetDeviceListQuery : IQuery<PagingViewModel<DeviceListViewModel>>
+    public class GetDeviceListQuery : IQuery<PagingViewModel<DeviceViewModel>>
     {
         //public int Page { get; set; }
         //public string Filter { get; set; }
