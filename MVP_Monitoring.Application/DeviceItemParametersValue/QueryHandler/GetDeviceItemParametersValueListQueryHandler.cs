@@ -13,24 +13,19 @@ using MVP_Monitoring.Domain.Models.ViewModels;
 
 namespace MVP_Monitoring.Application.DeviceItemParametersValue.QueryHandler
 {
-    public class GetDeviceItemParametersValueListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IQueryHandler<GetDeviceItemParametersValueListQuery, PagingViewModel<DeviceItemParametersValueViewModel>>
+    public class GetDeviceItemParametersValueListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IQueryHandler<GetDeviceItemParametersValueListQuery, List<DeviceItemParametersValueViewModel>>
     {
-        public async Task<Result<PagingViewModel<DeviceItemParametersValueViewModel>>> Handle(GetDeviceItemParametersValueListQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<DeviceItemParametersValueViewModel>>> Handle(GetDeviceItemParametersValueListQuery request, CancellationToken cancellationToken)
         {
-            var result = new Result<PagingViewModel<DeviceItemParametersValueViewModel>>();
+            var result = new Result<List<DeviceItemParametersValueViewModel>>();
 
-            var take = 10;
+            
             IList<Domain.Entities.DeviceItemParametersValue> entity;
-            var count = 0;
             entity = await unitOfWork.DeviceItemParametersValue
                 .GetAllAsync();
             var viewModel = mapper
                 .Map<List<DeviceItemParametersValueViewModel>>(entity.OrderByDescending(p => p.Id));
-            result.WithValue(new PagingViewModel<DeviceItemParametersValueViewModel>()
-            {
-                //PageCount = count.CalculatePageCount(take),
-                Results = viewModel
-            });
+            result.WithValue(viewModel);
             return result;
         }
     }

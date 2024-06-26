@@ -14,14 +14,12 @@ using MVP_Monitoring.Domain.Entities.Common;
 
 namespace MVP_Monitoring.Application.Device.QueryHandler
 {
-    public class GetDeviceListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IQueryHandler<GetDeviceListQuery, PagingViewModel<DeviceViewModel>>
+    public class GetDeviceListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IQueryHandler<GetDeviceListQuery, List<DeviceViewModel>>
     {
-        public async Task<Result<PagingViewModel<DeviceViewModel>>> Handle(GetDeviceListQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<DeviceViewModel>>> Handle(GetDeviceListQuery request, CancellationToken cancellationToken)
         {
-            var result = new Result<PagingViewModel<DeviceViewModel>>();
-            var take = 10;
+            var result = new Result<List<DeviceViewModel>>();
             IList<Domain.Entities.Device> entity;
-            var count = 0;
                 entity = await unitOfWork.Devices
                    .GetAllAsync();
             var viewModel = mapper
@@ -30,11 +28,7 @@ namespace MVP_Monitoring.Application.Device.QueryHandler
             {
                 item.PersianCreateDate =Helpers.GetPersianDateFromEnglish(item.CreateDate);
             }
-            result.WithValue(new PagingViewModel<DeviceViewModel>()
-            {
-                PageCount = count.CalculatePageCount(take),
-                Results = viewModel
-            });
+            result.WithValue(viewModel);
             return result;
         }
     }

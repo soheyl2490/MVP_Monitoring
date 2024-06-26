@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVP_Monitoring.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,5 +21,7 @@ namespace MVP_Monitoring.Domain.Models.ViewModels
         public DateTime CreateDate { get; set; }
 
         public string PersianCreateDate { get; set; }
+        
+        public List<DeviceItem> DeviceItems { get; set; }
     }
 }

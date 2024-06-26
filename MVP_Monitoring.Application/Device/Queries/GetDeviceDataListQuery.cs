@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace MVP_Monitoring.Application.Device.Queries
 {
-    public class GetDeviceDataListQuery : IQuery<PagingViewModel<DeviceDataListViewModel>>
+    public class GetDeviceDataListQuery : IQuery<DeviceDataListViewModel>
     {
-        public int DeviceId { get; set; }
+        public long DeviceId { get; set; }
     }
 }

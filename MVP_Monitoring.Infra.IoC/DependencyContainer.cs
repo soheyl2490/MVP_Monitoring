@@ -5,9 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using MVP_Monitoring.Application.Device;
 using MVP_Monitoring.Application.DeviceItemParametersValue.CommandHandler;
 using MVP_Monitoring.Application.DeviceItemParametersValue.Commands;
+using MVP_Monitoring.Domain.Repositories;
 using MVP_Monitoring.Domain.UnitOfWork;
 using MVP_Monitoring.Infra.Data.Common.Context;
 using MVP_Monitoring.Infra.Data.Common.UnitOfWork;
+using MVP_Monitoring.Infra.Data.Devices.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +72,9 @@ namespace MVP_Monitoring.Infra.IoC
             // **************************************************
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             // **************************************************
+            services.AddTransient<IDeviceRepository, DeviceRepository>();
+            // **************************************************
+
         }
     }
 }
