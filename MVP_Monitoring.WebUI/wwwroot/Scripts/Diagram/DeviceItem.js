@@ -1,428 +1,429 @@
-function init() {
-    if (window.goSamples) goSamples(); // init for these samples -- you don"t need to call this
+$(document).ready(function (e) {
 
-    // Since 2.2 you can also author concise templates with method chaining instead of GraphObject.make
-    // For details, see https://gojs.net/latest/intro/buildingObjects.html
-    const $ = go.GraphObject.make;
+    $('body').on('click', '.highcharts-title', function (e) {
+        $('#kt_modal_create_campaign').modal('show')
+    });
 
-    myDiagram = new go.Diagram('myDiagramDiv', { 'undoManager.isEnabled': true });
+    Highcharts.chart('div_temperature', {
+        chart: {
+            events: {
+                load: function () {
+                    var chart = this,
+                        yAxis = chart.yAxis[0],
+                        xAxis = chart.xAxis[0];
 
-    // These properties are what change an object from being a value indicator,
-    // such as a needle or a bar or a thumb of a slider, to being a controller
-    // that the user can drag to change the value of the instrument.
-    // This assumes that the scale (a "Graduated" Panel) is named "SCALE".
-    // The alwaysVisible parameter determines whether the object's visibility
-    // is controlled by the "SCALE"'s Panel.isEnabled property.
-    function sliderActions(alwaysVisible) {
-        return [
-            {
-                isActionable: true,
-                actionDown: (e, obj) => {
-                    obj._dragging = true;
-                    obj._original = obj.part.data.value;
-                },
-                actionMove: (e, obj) => {
-                    if (!obj._dragging) return;
-                    var scale = obj.part.findObject('SCALE');
-                    var pt = e.diagram.lastInput.documentPoint;
-                    var loc = scale.getLocalPoint(pt);
-                    var val = Math.round(scale.graduatedValueForPoint(loc));
-                    // just set the data.value temporarily, not recorded in UndoManager
-                    e.diagram.model.commit((m) => {
-                        m.set(obj.part.data, 'value', val);
-                    }, null); // null means skipsUndoManager
-                },
-                actionUp: (e, obj) => {
-                    if (!obj._dragging) return;
-                    obj._dragging = false;
-                    var scale = obj.part.findObject('SCALE');
-                    var pt = e.diagram.lastInput.documentPoint;
-                    var loc = scale.getLocalPoint(pt);
-                    var val = Math.round(scale.graduatedValueForPoint(loc));
-                    e.diagram.model.commit((m) => {
-                        m.set(obj.part.data, 'value', obj._original);
-                    }, null); // null means skipsUndoManager
-                    // now set the data.value for real
-                    e.diagram.model.commit((m) => {
-                        m.set(obj.part.data, 'value', val);
-                    }, 'dragged slider');
-                },
-                actionCancel: (e, obj) => {
-                    obj._dragging = false;
-                    e.diagram.model.commit((m) => {
-                        m.set(obj.part.data, 'value', obj._original);
-                    }, null); // null means skipsUndoManager
-                },
-            },
-            alwaysVisible ? {} : new go.Binding('visible', 'isEnabled').ofObject('SCALE'),
-            new go.Binding('cursor', 'isEnabled', (e) => (e ? 'pointer' : '')).ofObject('SCALE'),
-        ];
-    }
+                    chart.renderer.path([
+                        'M', xAxis.toPixels(0) - 100, yAxis.toPixels(53),
+                        'L', xAxis.toPixels(0), yAxis.toPixels(53)
+                    ]).attr({
+                        'stroke-width': 1,
+                        stroke: 'red'
+                    }).add();
 
-    // These helper functions simplify the node templates
+                    chart.renderer.text(
+                        '53°',
+                        xAxis.toPixels(0) - 100,
+                        yAxis.toPixels(53) - 10
+                    ).attr({
+                        stroke: 'black'
+                    }).css({
+                        fontSize: 20
+                    }).add();
 
-    function commonScaleBindings() {
-        return [
-            new go.Binding('graduatedMin', 'min'),
-            new go.Binding('graduatedMax', 'max'),
-            new go.Binding('graduatedTickUnit', 'unit'),
-            new go.Binding('isEnabled', 'editable'),
-        ];
-    }
-
-    function commonSlider(vert) {
-        return $(go.Shape,
-            'RoundedRectangle',
-            {
-                name: 'SLIDER',
-                fill: 'white',
-                desiredSize: vert ? new go.Size(20, 6) : new go.Size(6, 20),
-                alignment: vert ? go.Spot.Top : go.Spot.Right,
-            },
-            sliderActions(false)
-        );
-    }
-
-    function commonNodeStyle() {
-        return [
-            { locationSpot: go.Spot.Center },
-            { fromSpot: go.Spot.BottomRightSides, toSpot: go.Spot.TopLeftSides },
-            new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-        ];
-    }
-
-    myDiagram.nodeTemplateMap.add(
-        'Horizontal',
-        $(go.Node,
-            'Auto',
-            commonNodeStyle(),
-            // {
-            //   resizable: true,
-            //   resizeObjectName: "PATH",
-            //   resizeAdornmentTemplate:
-            //     $(go.Adornment, "Spot",
-            //       $(go.Placeholder),
-            //       $(go.Shape, { fill: "dodgerblue", width: 8, height: 8, alignment: go.Spot.Right, cursor: "e-resize" }))
-            // },
-            $(go.Shape, { fill: 'lightgray', stroke: 'gray' }),
-            $(go.Panel,
-                'Table',
-                { margin: 1, stretch: go.Stretch.Fill },
-                // header information
-                $(go.TextBlock, { row: 0, font: 'bold 10pt sans-serif' }, new go.Binding('text')),
-                $(go.Panel,
-                    'Spot',
-                    { row: 1 },
-                    $(go.Panel,
-                        'Graduated',
-                        { name: 'SCALE', margin: new go.Margin(0, 6), graduatedTickUnit: 10, isEnabled: false },
-                        commonScaleBindings(),
-                        $(go.Shape, { geometryString: 'M0 0 H200', height: 0, name: 'PATH' }),
-                        $(go.Shape, { geometryString: 'M0 0 V16', alignmentFocus: go.Spot.Center, stroke: 'gray' }),
-                        $(go.Shape, { geometryString: 'M0 0 V20', alignmentFocus: go.Spot.Center, interval: 5, strokeWidth: 1.5 })
-                    ),
-                    $(go.Panel,
-                        'Spot',
-                        { alignment: go.Spot.Left, alignmentFocus: go.Spot.Left, alignmentFocusName: 'BAR' },
-                        // the indicator (a bar)
-                        $(go.Shape,
-                            { name: 'BAR', fill: 'red', strokeWidth: 0, height: 8 },
-                            new go.Binding('fill', 'color'),
-                            new go.Binding('desiredSize', 'value', (v, shp) => {
-                                var scale = shp.part.findObject('SCALE');
-                                var path = scale.findMainElement();
-                                var len = ((v - scale.graduatedMin) / (scale.graduatedMax - scale.graduatedMin)) * path.geometry.bounds.width;
-                                return new go.Size(len, 10);
-                            })
-                        ),
-                        commonSlider(false)
-                    )
-                ),
-                // state information
-                $(go.TextBlock, '0', { row: 2, alignment: go.Spot.Left }, new go.Binding('text', 'min')),
-                $(go.TextBlock, '100', { row: 2, alignment: go.Spot.Right }, new go.Binding('text', 'max')),
-                $(go.TextBlock,
-                    { row: 2, background: 'white', font: 'bold 10pt sans-serif', isMultiline: false, editable: true },
-                    new go.Binding('text', 'value', (v) => v.toString()).makeTwoWay((s) => parseFloat(s))
-                )
-            )
-        )
-    );
-
-    myDiagram.nodeTemplateMap.add(
-        'Vertical',
-        $(go.Node,
-            'Auto',
-            commonNodeStyle(),
-            // {
-            //   resizable: true,
-            //   resizeObjectName: "PATH",
-            //   resizeAdornmentTemplate:
-            //     $(go.Adornment, "Spot",
-            //       $(go.Placeholder),
-            //       $(go.Shape, { fill: "dodgerblue", width: 8, height: 8, alignment: go.Spot.Top, cursor: "n-resize" }))
-            // },
-            $(go.Shape, { fill: 'lightgray', stroke: 'gray' }),
-            $(go.Panel,
-                'Table',
-                { margin: 1, stretch: go.Stretch.Fill },
-                // header information
-                $(go.TextBlock, { row: 0, font: 'bold 10pt sans-serif' }, new go.Binding('text')),
-                $(go.Panel,
-                    'Spot',
-                    { row: 1 },
-                    $(go.Panel,
-                        'Graduated',
-                        { name: 'SCALE', margin: new go.Margin(6, 0), graduatedTickUnit: 10, isEnabled: false },
-                        commonScaleBindings(),
-                        // NOTE: path goes upward!
-                        $(go.Shape, { geometryString: 'M0 0 V-200', width: 0, name: 'PATH' }),
-                        $(go.Shape, { geometryString: 'M0 0 V16', alignmentFocus: go.Spot.Center, stroke: 'gray' }),
-                        $(go.Shape, { geometryString: 'M0 0 V20', alignmentFocus: go.Spot.Center, interval: 5, strokeWidth: 1.5 })
-                    ),
-                    $(go.Panel,
-                        'Spot',
-                        { alignment: go.Spot.Bottom, alignmentFocus: go.Spot.Bottom, alignmentFocusName: 'BAR' },
-                        // the indicator (a bar)
-                        $(go.Shape,
-                            { name: 'BAR', fill: 'red', strokeWidth: 0, height: 8 },
-                            new go.Binding('fill', 'color'),
-                            new go.Binding('desiredSize', 'value', (v, shp) => {
-                                var scale = shp.part.findObject('SCALE');
-                                var path = scale.findMainElement();
-                                var len = ((v - scale.graduatedMin) / (scale.graduatedMax - scale.graduatedMin)) * path.geometry.bounds.height;
-                                return new go.Size(10, len);
-                            })
-                        ),
-                        commonSlider(true)
-                    )
-                ),
-                // state information
-                $(go.TextBlock, '0', { row: 2, alignment: go.Spot.Left }, new go.Binding('text', 'min')),
-                $(go.TextBlock, '100', { row: 2, alignment: go.Spot.Right }, new go.Binding('text', 'max')),
-                $(go.TextBlock,
-                    { row: 2, background: 'white', font: 'bold 10pt sans-serif', isMultiline: false, editable: true },
-                    new go.Binding('text', 'value', (v) => v.toString()).makeTwoWay((s) => parseFloat(s))
-                )
-            )
-        )
-    );
-
-    myDiagram.nodeTemplateMap.add(
-        'NeedleMeter',
-        $(go.Node,
-            'Auto',
-            commonNodeStyle(),
-            $(go.Shape, { fill: 'darkslategray' }),
-            $(go.Panel,
-                'Spot',
-                $(go.Panel,
-                    'Position',
-                    $(go.Panel,
-                        'Graduated',
-                        { name: 'SCALE', margin: 10 },
-                        commonScaleBindings(),
-                        $(go.Shape, { name: 'PATH', geometryString: 'M0 0 A120 120 0 0 1 200 0', stroke: 'white' }),
-                        $(go.Shape, { geometryString: 'M0 0 V10', stroke: 'white' }),
-                        $(go.TextBlock, { segmentOffset: new go.Point(0, 12), segmentOrientation: go.Orientation.Along, stroke: 'white' })
-                    ),
-                    $(go.Shape,
-                        { stroke: 'red', strokeWidth: 4, isGeometryPositioned: true },
-                        new go.Binding('geometry', 'value', (v, shp) => {
-                            var scale = shp.part.findObject('SCALE');
-                            var pt = scale.graduatedPointForValue(v);
-                            var geo = new go.Geometry(go.GeometryType.Line);
-                            geo.startX = 100 + scale.margin.left;
-                            geo.startY = 90 + scale.margin.top;
-                            geo.endX = pt.x + scale.margin.left;
-                            geo.endY = pt.y + scale.margin.top;
-                            return geo;
-                        }),
-                        sliderActions(true)
-                    )
-                ),
-                $(go.TextBlock,
-                    { alignment: new go.Spot(0.5, 0.5, 0, 20), stroke: 'white', font: 'bold 10pt sans-serif' },
-                    new go.Binding('text'),
-                    new go.Binding('stroke', 'color')
-                ),
-                $(go.TextBlock,
-                    { alignment: go.Spot.Top, margin: new go.Margin(4, 0, 0, 0) },
-                    { stroke: 'white', font: 'bold italic 13pt sans-serif', isMultiline: false, editable: true },
-                    new go.Binding('text', 'value', (v) => v.toString()).makeTwoWay((s) => parseFloat(s)),
-                    new go.Binding('stroke', 'color')
-                )
-            )
-        )
-    );
-
-    myDiagram.nodeTemplateMap.add(
-        'CircularMeter',
-        $(go.Node,
-            'Table',
-            commonNodeStyle(),
-            $(go.Panel,
-                'Auto',
-                { row: 0 },
-                $(go.Shape, 'Circle', { stroke: 'orange', strokeWidth: 5, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight }, new go.Binding('stroke', 'color')),
-                $(go.Panel,
-                    'Spot',
-                    $(go.Panel,
-                        'Graduated',
-                        {
-                            name: 'SCALE',
-                            margin: 14,
-                            graduatedTickUnit: 2.5, // tick marks at each multiple of 2.5
-                            stretch: go.Stretch.None, // needed to avoid unnecessary re-measuring!!!
-                        },
-                        commonScaleBindings(),
-                        // the main path of the graduated panel, an arc starting at 135 degrees and sweeping for 270 degrees
-                        $(go.Shape, { name: 'PATH', geometryString: 'M-70.7107 70.7107 B135 270 0 0 100 100 M0 100', stroke: 'white', strokeWidth: 4 }),
-                        // three differently sized tick marks
-                        $(go.Shape, { geometryString: 'M0 0 V10', stroke: 'white', strokeWidth: 1 }),
-                        $(go.Shape, { geometryString: 'M0 0 V12', stroke: 'white', strokeWidth: 2, interval: 2 }),
-                        $(go.Shape, { geometryString: 'M0 0 V15', stroke: 'white', strokeWidth: 3, interval: 4 }),
-                        $(go.TextBlock, {
-                            // each tick label
-                            interval: 4,
-                            alignmentFocus: go.Spot.Center,
-                            font: 'bold italic 14pt sans-serif',
-                            stroke: 'white',
-                            segmentOffset: new go.Point(0, 30),
-                        })
-                    ),
-                    $(go.TextBlock,
-                        { alignment: new go.Spot(0.5, 0.9), stroke: 'white', font: 'bold italic 14pt sans-serif', editable: true },
-                        new go.Binding('text', 'value', (v) => v.toString()).makeTwoWay((s) => parseFloat(s)),
-                        new go.Binding('stroke', 'color')
-                    ),
-                    $(go.Shape,
-                        { fill: 'red', strokeWidth: 0, geometryString: 'F1 M-6 0 L0 -6 100 0 0 6z x M-100 0' },
-                        new go.Binding('angle', 'value', (v, shp) => {
-                            // this determines the angle of the needle, based on the data.value argument
-                            var scale = shp.part.findObject('SCALE');
-                            var p = scale.graduatedPointForValue(v);
-                            var path = shp.part.findObject('PATH');
-                            var c = path.actualBounds.center;
-                            return c.directionPoint(p);
-                        }),
-                        sliderActions(true)
-                    ),
-                    $(go.Shape, 'Circle', { width: 2, height: 2, fill: '#444' })
-                )
-            ),
-            $(go.TextBlock, { row: 1, font: 'bold 11pt sans-serif' }, new go.Binding('text'))
-        )
-    );
-
-    myDiagram.nodeTemplateMap.add(
-        'BarMeter',
-        $(go.Node,
-            'Table',
-            commonNodeStyle(),
-            { scale: 0.8 },
-            $(go.Panel,
-                'Auto',
-                { row: 0 },
-                $(go.Shape, 'Circle', { stroke: 'orange', strokeWidth: 5, spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight }, new go.Binding('stroke', 'color')),
-                $(go.Panel,
-                    'Spot',
-                    $(go.Panel,
-                        'Graduated',
-                        {
-                            name: 'SCALE',
-                            margin: 14,
-                            graduatedTickUnit: 2.5, // tick marks at each multiple of 2.5
-                            stretch: go.Stretch.None, // needed to avoid unnecessary re-measuring!!!
-                        },
-                        commonScaleBindings(),
-                        // the main path of the graduated panel, an arc starting at 135 degrees and sweeping for 270 degrees
-                        $(go.Shape, { name: 'PATH', geometryString: 'M-70.7107 70.7107 B135 270 0 0 100 100 M0 100', stroke: 'white', strokeWidth: 4 }),
-                        // three differently sized tick marks
-                        $(go.Shape, { geometryString: 'M0 0 V10', stroke: 'white', strokeWidth: 1 }),
-                        $(go.Shape, { geometryString: 'M0 0 V12', stroke: 'white', strokeWidth: 2, interval: 2 }),
-                        $(go.Shape, { geometryString: 'M0 0 V15', stroke: 'white', strokeWidth: 3, interval: 4 }),
-                        $(go.TextBlock, {
-                            // each tick label
-                            interval: 4,
-                            alignmentFocus: go.Spot.Center,
-                            font: 'bold italic 14pt sans-serif',
-                            stroke: 'white',
-                            segmentOffset: new go.Point(0, 30),
-                        })
-                    ),
-                    $(go.TextBlock,
-                        { alignment: go.Spot.Center, stroke: 'white', font: 'bold italic 14pt sans-serif', editable: true },
-                        new go.Binding('text', 'value', (v) => v.toString()).makeTwoWay((s) => parseFloat(s)),
-                        new go.Binding('stroke', 'color')
-                    ),
-                    $(go.Shape,
-                        { fill: 'red', strokeWidth: 0 },
-                        new go.Binding('geometry', 'value', (v, shp) => {
-                            var scale = shp.part.findObject('SCALE');
-                            var p0 = scale.graduatedPointForValue(scale.graduatedMin);
-                            var pv = scale.graduatedPointForValue(v);
-                            var path = shp.part.findObject('PATH');
-                            var radius = path.actualBounds.width / 2;
-                            var c = path.actualBounds.center;
-                            var a0 = c.directionPoint(p0);
-                            var av = c.directionPoint(pv);
-                            var sweep = av - a0;
-                            if (sweep < 0) sweep += 360;
-                            var layerThickness = 8;
-                            return new go.Geometry()
-                                .add(new go.PathFigure(-radius, -radius)) // always make sure the Geometry includes the top left corner
-                                .add(new go.PathFigure(radius, radius)) // and the bottom right corner of the whole circular area
-                                .add(
-                                    new go.PathFigure(p0.x - radius, p0.y - radius)
-                                        .add(new go.PathSegment(go.SegmentType.Arc, a0, sweep, 0, 0, radius, radius))
-                                        .add(new go.PathSegment(go.SegmentType.Line, pv.x - radius, pv.y - radius))
-                                        .add(new go.PathSegment(go.SegmentType.Arc, av, -sweep, 0, 0, radius - layerThickness, radius - layerThickness).close())
-                                );
-                        }),
-                        sliderActions(true)
-                    ),
-                    $(go.Shape, 'Circle', { width: 2, height: 2, fill: '#444' })
-                )
-            ),
-            $(go.TextBlock, { row: 1, font: 'bold 11pt sans-serif' }, new go.Binding('text'))
-        )
-    );
-
-    myDiagram.linkTemplate = $(go.Link,
-        { routing: go.Routing.AvoidsNodes, corner: 12 },
-        $(go.Shape, { isPanelMain: true, stroke: 'gray', strokeWidth: 9 }),
-        $(go.Shape, { isPanelMain: true, stroke: 'lightgray', strokeWidth: 5 }),
-        $(go.Shape, { isPanelMain: true, stroke: 'whitesmoke' })
-    );
-
-    myDiagram.model = new go.GraphLinksModel(
-        [
-            { key: 2, value: 23, text: 'Circular Meter', category: 'CircularMeter', loc: '250 -120', editable: true, color: 'skyblue' },
-            { key: 3, value: 56, text: 'Needle Meter', category: 'NeedleMeter', loc: '250 110', editable: true, color: 'lightsalmon' },
-            { key: 5, value: 23, max: 200, unit: 5, text: 'Bar Meter', category: 'BarMeter', loc: '550 200', editable: true, color: 'orange' },
-        ],
-        [
-        ]
-    );
-
-    loop(); // start a simple simulation
-}
-
-function loop() {
-    setTimeout(() => {
-        myDiagram.commit((diag) => {
-            diag.links.each((l) => {
-                if (Math.random() < 0.2) return;
-                var prev = l.fromNode.data.value;
-                var now = l.toNode.data.value;
-                if (prev > (l.fromNode.data.min || 0) && now < (l.toNode.data.max || 100)) {
-                    diag.model.set(l.fromNode.data, 'value', prev - 1);
-                    diag.model.set(l.toNode.data, 'value', now + 1);
+                    chart.renderer.text(
+                        '',
+                        xAxis.toPixels(0) - 100,
+                        yAxis.toPixels(53) + 30
+                    ).attr({
+                        stroke: 'black'
+                    }).css({
+                        fontSize: 14
+                    }).add();
                 }
-            });
-        });
-        loop();
-    }, 500);
-}
-window.addEventListener('DOMContentLoaded', init);
+            }
+        },
+        title: {
+            text: 'دمای موتور'
+        },
+        xAxis: {
+            visible: false
+        },
+        yAxis: {
+            visible: false
+        },
+        colorAxis: {
+            visible: false,
+            stops: [
+                [0, '#00bfff'],
+                [0.3, '#007bff'],
+                [0.35, '#0dc200'],
+                [0.5, '#bbff99'],
+                [0.55, '#ff8400'],
+                [0.9, '#ff0000']
+            ],
+        },
+        series: [{
+            pointWidth: 40,
+            type: 'column',
+            borderWidth: 0,
+            threshold: 15,
+            data: [
+                [0, 85],
+                [0, 80],
+                [0, 75],
+                [0, 70],
+                [0, 65],
+                [0, 60],
+                [0, 55],
+                [0, 50],
+                [0, 45],
+                [0, 40],
+                [0, 35],
+                [0, 30],
+                [0, 25],
+                [0, 20]
+            ]
+        }],
+        exporting: {
+            enabled: false
+        }
+    });
+
+    Highcharts.chart('div_temperature_1', {
+        chart: {
+            events: {
+                load: function () {
+                    var chart = this,
+                        yAxis = chart.yAxis[0],
+                        xAxis = chart.xAxis[0];
+
+                    chart.renderer.path([
+                        'M', xAxis.toPixels(0) - 100, yAxis.toPixels(53),
+                        'L', xAxis.toPixels(0), yAxis.toPixels(53)
+                    ]).attr({
+                        'stroke-width': 1,
+                        stroke: 'red'
+                    }).add();
+
+                    chart.renderer.text(
+                        '40°',
+                        xAxis.toPixels(0) - 100,
+                        yAxis.toPixels(53) - 40
+                    ).attr({
+                        stroke: 'black'
+                    }).css({
+                        fontSize: 20
+                    }).add();
+
+                    chart.renderer.text(
+                        '',
+                        xAxis.toPixels(0) - 100,
+                        yAxis.toPixels(53) + 80
+                    ).attr({
+                        stroke: 'black'
+                    }).css({
+                        fontSize: 14
+                    }).add();
+                }
+            }
+        },
+        title: {
+            text: 'دمای یاتاقان'
+        },
+        xAxis: {
+            visible: false
+        },
+        yAxis: {
+            visible: false
+        },
+        colorAxis: {
+            visible: false,
+            stops: [
+                [0, '#00bfff'],
+                [0.3, '#007bff'],
+                [0.35, '#0dc200'],
+                [0.5, '#bbff99'],
+                [0.55, '#ff8400'],
+                [0.9, '#ff0000']
+            ],
+        },
+        series: [{
+            pointWidth: 40,
+            type: 'column',
+            borderWidth: 0,
+            threshold: 15,
+            data: [
+                [0, 85],
+                [0, 80],
+                [0, 75],
+                [0, 70],
+                [0, 65],
+                [0, 60],
+                [0, 55],
+                [0, 50],
+                [0, 45],
+                [0, 40],
+                [0, 35],
+                [0, 30],
+                [0, 25],
+                [0, 20]
+            ]
+        }],
+        exporting: {
+            enabled: false
+        }
+    });
+
+    Highcharts.chart('div_motorSpeed', {
+
+        chart: {
+            type: 'gauge',
+            plotBackgroundColor: null,
+            plotBackgroundImage: null,
+            plotBorderWidth: 0,
+            plotShadow: false,
+            height: '80%'
+        },
+
+        title: {
+            text: 'دور موتور'
+        },
+
+        pane: {
+            startAngle: -90,
+            endAngle: 89.9,
+            background: null,
+            center: ['50%', '75%'],
+            size: '110%'
+        },
+
+        // the value axis
+        yAxis: {
+            min: 0,
+            max: 3000,
+            tickPixelInterval: 72,
+            tickPosition: 'inside',
+            tickColor: Highcharts.defaultOptions.chart.backgroundColor || '#FFFFFF',
+            tickLength: 20,
+            tickWidth: 2,
+            minorTickInterval: null,
+            labels: {
+                distance: 20,
+                style: {
+                    fontSize: '14px'
+                }
+            },
+            lineWidth: 0,
+            plotBands: [{
+                from: 0,
+                to: 1000,
+                color: '#55BF3B', // green
+                thickness: 20,
+                borderRadius: '50%'
+            }, {
+                from: 1000,
+                to: 1500,
+                color: '#DDDF0D', // yellow
+                thickness: 20
+            },
+            {
+                from: 1500,
+                to: 3000,
+                color: '#DF5353', // red
+                thickness: 20,
+                borderRadius: '50%'
+            },]
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'Speed',
+            data: [1000],
+            tooltip: {
+                valueSuffix: ' km/h'
+            },
+            dataLabels: {
+                format: '{y} km/h',
+                borderWidth: 0,
+                color: (
+                    Highcharts.defaultOptions.title &&
+                    Highcharts.defaultOptions.title.style &&
+                    Highcharts.defaultOptions.title.style.color
+                ) || '#333333',
+                style: {
+                    fontSize: '16px'
+                }
+            },
+            dial: {
+                radius: '80%',
+                backgroundColor: 'gray',
+                baseWidth: 12,
+                baseLength: '0%',
+                rearLength: '0%'
+            },
+            pivot: {
+                backgroundColor: 'gray',
+                radius: 6
+            }
+
+        }]
+
+    });
+
+    // Add some life
+    setInterval(() => {
+        const chart = Highcharts.charts[0];
+        if (chart && !chart.renderer.forExport) {
+            const point = chart.series[0].points[0],
+                inc = Math.round((Math.random() - 0.5) * 20);
+
+            let newVal = point.y + inc;
+            if (newVal < 0 || newVal > 200) {
+                newVal = point.y - inc;
+            }
+
+            point.update(newVal);
+        }
+
+    }, 3000);
+
+    Highcharts.chart('div_motorCurrent', {
+        chart: {
+            type: 'gauge',
+            plotBorderWidth: 1,
+            plotBackgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF4C6'],
+                    [0.3, '#FFFFFF'],
+                    [1, '#FFF4C6']
+                ]
+            },
+            plotBackgroundImage: null,
+            height: 200
+        },
+
+        title: {
+            text: 'جریان موتور'
+        },
+
+        pane: {
+            startAngle: -90,
+            endAngle: 89.9,
+            background: null,
+            center: ['50%', '75%'],
+            size: '110%'
+        },
+
+        exporting: {
+            enabled: false
+        },
+
+        tooltip: {
+            enabled: false
+        },
+
+        yAxis: [{
+            min: -20,
+            max: 6,
+            minorTickPosition: 'outside',
+            tickPosition: 'outside',
+            labels: {
+                rotation: 'auto',
+                distance: 20
+            },
+            plotBands: [{
+                from: 0,
+                to: 6,
+                color: '#C02316',
+                innerRadius: '100%',
+                outerRadius: '105%'
+            }],
+            pane: 0,
+            title: {
+                y: -40
+            }
+        }],
+
+        plotOptions: {
+            gauge: {
+                dataLabels: {
+                    enabled: false
+                },
+                dial: {
+                    radius: '100%'
+                }
+            }
+        },
+
+        series: [{
+            name: 'Channel A',
+            data: [-10],
+            yAxis: 0
+        }]
+    }
+    );
+
+    ///////////////////////////////////////////
+
+    Highcharts.chart('div_chart_1 ', {
+        chart: {
+            type: 'area'
+        },
+        title: {
+            text: 'Greenhouse gases from Norwegian economic activity',
+            align: 'left'
+        },
+        subtitle: {
+            text: 'Source: ' +
+                '<a href="https://www.ssb.no/en/statbank/table/09288/"' +
+                'target="_blank">SSB</a>',
+            align: 'left'
+        },
+        yAxis: {
+            title: {
+                useHTML: true,
+                text: 'Million tonnes CO<sub>2</sub>-equivalents'
+            }
+        },
+        tooltip: {
+            shared: true,
+            headerFormat: '<span style="font-size:12px"><b>{point.key}</b></span>' +
+                '<br>'
+        },
+        plotOptions: {
+            series: {
+                pointStart: 2012
+            },
+            area: {
+                stacking: 'normal',
+                lineColor: '#666666',
+                lineWidth: 1,
+                marker: {
+                    lineWidth: 1,
+                    lineColor: '#666666'
+                }
+            }
+        },
+        series: [{
+            name: 'Ocean transport',
+            data: [13234, 12729, 11533, 17798, 10398, 12811, 15483, 16196, 16214]
+        }, {
+            name: 'Households',
+            data: [6685, 6535, 6389, 6384, 6251, 5725, 5631, 5047, 5039]
+
+        }, {
+            name: 'Agriculture and hunting',
+            data: [4752, 4820, 4877, 4925, 5006, 4976, 4946, 4911, 4913]
+        }, {
+            name: 'Air transport',
+            data: [3164, 3541, 3898, 4115, 3388, 3569, 3887, 4593, 1550]
+
+        }, {
+            name: 'Construction',
+            data: [2019, 2189, 2150, 2217, 2175, 2257, 2344, 2176, 2186]
+        }]
+    });
+
+});
