@@ -1,178 +1,163 @@
 $(document).ready(function (e) {
 
+    setInterval(() => {
+
+        Highcharts.charts.forEach((chart, i) => {
+            if (chart.renderTo.id == "div_motorSpeed") {
+                const point = chart.series[0].points[0],
+                    inc = Math.round((Math.random() - 0.5) * 1000);
+
+                let newVal = point.y + inc;
+                if (newVal < 0 || newVal > 3000) {
+                    newVal = point.y - inc;
+                }
+
+                var audio = new Audio('/assets/cutoff405.mp3');
+
+                if (newVal > 1500) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
+
+                point.update(newVal);
+            }
+            if (chart.renderTo.id == "div_motorCurrent") {
+
+                const point = chart.series[0].points[0],
+                    inc = (Math.random() - 0.5) * 3;
+
+                let newVal = point.y + inc;
+                if (newVal < -20 || newVal > 6) {
+                    newVal = point.y - inc;
+                }
+
+                point.update(newVal, false);
+                chart.redraw();
+            }
+            if (chart.renderTo.id == "div_temperature") {
+
+                const point = chart.series[0].points[0],
+                    inc = (Math.random()) * 6;
+
+                let newVal = point.y + inc;
+                if (newVal < -30 || newVal > 60) {
+                    newVal = point.y - inc;
+                }
+
+                point.update(Number(newVal.toFixed(1)), false);
+                chart.redraw();
+            }
+            if (chart.renderTo.id == "div_temperature1") {
+
+                const point = chart.series[0].points[0],
+                    inc = (Math.random()) * 10;
+
+                let newVal = point.y + inc;
+                if (newVal < -30 || newVal > 100) {
+                    newVal = point.y - inc;
+                }
+
+                point.update(Number(newVal.toFixed(1)), false);
+                chart.redraw();
+            }
+        });
+
+
+    }, 500);
+
     $('body').on('click', '.highcharts-title', function (e) {
         $('#kt_modal_create_campaign').modal('show')
     });
 
-    Highcharts.chart('div_temperature', {
-        chart: {
-            events: {
-                load: function () {
-                    var chart = this,
-                        yAxis = chart.yAxis[0],
-                        xAxis = chart.xAxis[0];
+    var gaugeOptions = {
+        chart: { type: 'solidgauge' },
+        title: null,
+        pane: {
+            size: '90%',
+            startAngle: -180,
+            endAngle: 90,
+            background: {
+                backgroundColor: '#EEE',
+                innerRadius: '95%',
+                outerRadius: '100%',
+                shape: 'arc'
+            }
+        },
+        tooltip: { enabled: false },
 
-                    chart.renderer.path([
-                        'M', xAxis.toPixels(0) - 100, yAxis.toPixels(53),
-                        'L', xAxis.toPixels(0), yAxis.toPixels(53)
-                    ]).attr({
-                        'stroke-width': 1,
-                        stroke: 'red'
-                    }).add();
-
-                    chart.renderer.text(
-                        '53°',
-                        xAxis.toPixels(0) - 100,
-                        yAxis.toPixels(53) - 10
-                    ).attr({
-                        stroke: 'black'
-                    }).css({
-                        fontSize: 20
-                    }).add();
-
-                    chart.renderer.text(
-                        '',
-                        xAxis.toPixels(0) - 100,
-                        yAxis.toPixels(53) + 30
-                    ).attr({
-                        stroke: 'black'
-                    }).css({
-                        fontSize: 14
-                    }).add();
+        // the value axis
+        yAxis: {
+            stops: [
+                [0.1, '#00f'],
+                [0.2, '#0f0'],
+                [0.3, '#f00']
+            ],
+            lineWidth: 0,
+            minorTickInterval: 0,
+            tickPixelInterval: 50,
+            tickWidth: 1,
+            labels: {
+                enabled: true,
+                distance: 10
+            }
+        },
+        plotOptions: {
+            solidgauge: {
+                innerRadius: '95%',
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true
                 }
             }
+        }
+    };
+    $('#div_temperature').highcharts(Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: -30,
+            max: 60
         },
         title: {
             text: 'دمای موتور'
         },
-        xAxis: {
-            visible: false
+        credits: {
+            enabled: false
         },
-        yAxis: {
-            visible: false
-        },
-        colorAxis: {
-            visible: false,
-            stops: [
-                [0, '#00bfff'],
-                [0.3, '#007bff'],
-                [0.35, '#0dc200'],
-                [0.5, '#bbff99'],
-                [0.55, '#ff8400'],
-                [0.9, '#ff0000']
-            ],
-        },
-        series: [{
-            pointWidth: 40,
-            type: 'column',
-            borderWidth: 0,
-            threshold: 15,
-            data: [
-                [0, 85],
-                [0, 80],
-                [0, 75],
-                [0, 70],
-                [0, 65],
-                [0, 60],
-                [0, 55],
-                [0, 50],
-                [0, 45],
-                [0, 40],
-                [0, 35],
-                [0, 30],
-                [0, 25],
-                [0, 20]
-            ]
-        }],
         exporting: {
             enabled: false
-        }
-    });
-
-    Highcharts.chart('div_temperature_1', {
-        chart: {
-            events: {
-                load: function () {
-                    var chart = this,
-                        yAxis = chart.yAxis[0],
-                        xAxis = chart.xAxis[0];
-
-                    chart.renderer.path([
-                        'M', xAxis.toPixels(0) - 100, yAxis.toPixels(53),
-                        'L', xAxis.toPixels(0), yAxis.toPixels(53)
-                    ]).attr({
-                        'stroke-width': 1,
-                        stroke: 'red'
-                    }).add();
-
-                    chart.renderer.text(
-                        '40°',
-                        xAxis.toPixels(0) - 100,
-                        yAxis.toPixels(53) - 40
-                    ).attr({
-                        stroke: 'black'
-                    }).css({
-                        fontSize: 20
-                    }).add();
-
-                    chart.renderer.text(
-                        '',
-                        xAxis.toPixels(0) - 100,
-                        yAxis.toPixels(53) + 80
-                    ).attr({
-                        stroke: 'black'
-                    }).css({
-                        fontSize: 14
-                    }).add();
-                }
+        },
+        series: [{
+            name: 'inTemp',
+            data: [-15.5], /////// Temp Value //////////
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' + ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y} &deg;C</span><br/>' + '<span style="font-size:12px;color:silver"></span></div>'
             }
+        }]
+    }));
+
+    $('#div_temperature1').highcharts(Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: -30,
+            max: 100
         },
         title: {
             text: 'دمای یاتاقان'
         },
-        xAxis: {
-            visible: false
-        },
-        yAxis: {
-            visible: false
-        },
-        colorAxis: {
-            visible: false,
-            stops: [
-                [0, '#00bfff'],
-                [0.3, '#007bff'],
-                [0.35, '#0dc200'],
-                [0.5, '#bbff99'],
-                [0.55, '#ff8400'],
-                [0.9, '#ff0000']
-            ],
-        },
-        series: [{
-            pointWidth: 40,
-            type: 'column',
-            borderWidth: 0,
-            threshold: 15,
-            data: [
-                [0, 85],
-                [0, 80],
-                [0, 75],
-                [0, 70],
-                [0, 65],
-                [0, 60],
-                [0, 55],
-                [0, 50],
-                [0, 45],
-                [0, 40],
-                [0, 35],
-                [0, 30],
-                [0, 25],
-                [0, 20]
-            ]
-        }],
         exporting: {
             enabled: false
-        }
-    });
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'inTemp',
+            data: [50.5], /////// Temp Value //////////
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' + ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y} &deg;C</span><br/>' + '<span style="font-size:12px;color:silver"></span></div>'
+            }
+        }]
+    }));
 
     Highcharts.chart('div_motorSpeed', {
 
@@ -241,10 +226,10 @@ $(document).ready(function (e) {
             name: 'Speed',
             data: [1000],
             tooltip: {
-                valueSuffix: ' km/h'
+                valueSuffix: ' RPM'
             },
             dataLabels: {
-                format: '{y} km/h',
+                format: '{y} RPM',
                 borderWidth: 0,
                 color: (
                     Highcharts.defaultOptions.title &&
@@ -270,23 +255,6 @@ $(document).ready(function (e) {
         }]
 
     });
-
-    // Add some life
-    setInterval(() => {
-        const chart = Highcharts.charts[0];
-        if (chart && !chart.renderer.forExport) {
-            const point = chart.series[0].points[0],
-                inc = Math.round((Math.random() - 0.5) * 20);
-
-            let newVal = point.y + inc;
-            if (newVal < 0 || newVal > 200) {
-                newVal = point.y - inc;
-            }
-
-            point.update(newVal);
-        }
-
-    }, 3000);
 
     Highcharts.chart('div_motorCurrent', {
         chart: {
@@ -362,67 +330,259 @@ $(document).ready(function (e) {
             data: [-10],
             yAxis: 0
         }]
-    }
-    );
+    });
 
-    ///////////////////////////////////////////
+    /////////////////////////////////////////////
 
-    Highcharts.chart('div_chart_1 ', {
+    Highcharts.chart('div_chart1', {
         chart: {
-            type: 'area'
+            type: 'spline'
         },
         title: {
-            text: 'Greenhouse gases from Norwegian economic activity',
-            align: 'left'
+            text: ''
         },
         subtitle: {
-            text: 'Source: ' +
-                '<a href="https://www.ssb.no/en/statbank/table/09288/"' +
-                'target="_blank">SSB</a>',
-            align: 'left'
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            ],
+            accessibility: {
+                description: 'Months of the year'
+            }
+        },
+        exporting: {
+            enabled: false
         },
         yAxis: {
             title: {
-                useHTML: true,
-                text: 'Million tonnes CO<sub>2</sub>-equivalents'
+                text: ''
+            },
+            labels: {
+                format: ''
             }
         },
         tooltip: {
-            shared: true,
-            headerFormat: '<span style="font-size:12px"><b>{point.key}</b></span>' +
-                '<br>'
+            crosshairs: true,
+            shared: true
         },
         plotOptions: {
-            series: {
-                pointStart: 2012
-            },
-            area: {
-                stacking: 'normal',
-                lineColor: '#666666',
-                lineWidth: 1,
+            spline: {
                 marker: {
-                    lineWidth: 1,
-                    lineColor: '#666666'
+                    radius: 4,
+                    lineColor: '#666666',
+                    lineWidth: 1
                 }
             }
         },
         series: [{
-            name: 'Ocean transport',
-            data: [13234, 12729, 11533, 17798, 10398, 12811, 15483, 16196, 16214]
-        }, {
-            name: 'Households',
-            data: [6685, 6535, 6389, 6384, 6251, 5725, 5631, 5047, 5039]
+            name: '',
+            marker: {
+                symbol: 'square'
+            },
+            data: [5.2, 5.7, 8.7, 13.9, 18.2, 21.4, 25.0, {
+                y: 26.4,
+                marker: {
+                    symbol: 'url(https://www.highcharts.com/samples/graphics/sun.png)'
+                },
+                accessibility: {
+                    description: 'Sunny symbol, this is the warmest point in the ' +
+                        'chart.'
+                }
+            }, 22.8, 17.5, 12.1, 7.6]
 
         }, {
-            name: 'Agriculture and hunting',
-            data: [4752, 4820, 4877, 4925, 5006, 4976, 4946, 4911, 4913]
-        }, {
-            name: 'Air transport',
-            data: [3164, 3541, 3898, 4115, 3388, 3569, 3887, 4593, 1550]
+            name: '',
+            marker: {
+                symbol: 'diamond'
+            },
+            data: [{
+                y: 1.5,
+                marker: {
+                    symbol: 'url(https://www.highcharts.com/samples/graphics/snow.png)'
+                },
+                accessibility: {
+                    description: 'Snowy symbol, this is the coldest point in the ' +
+                        'chart.'
+                }
+            }, 1.6, 3.3, 5.9, 10.5, 13.5, 14.5, 14.4, 11.5, 8.7, 4.7, 2.6]
+        }]
+    });
 
+
+    // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
+    Highcharts.chart('div_chart4', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'نمودار دمای موتور'
+        },
+        subtitle: {
+            text: ''
+        },
+        exporting: {
+            enabled: false
+        },
+        xAxis: {
+            categories: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                '10', '11', '12'
+            ]
+        },
+        yAxis: {
+            title: {
+                text: 'دما (°C)'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [ {
+            name: 'دما',
+            data: [
+                -2.9, -3.6, -0.6, 4.8, 10.2, 14.5, 17.6, 16.5, 12.0, 6.5,
+                2.0, -0.9
+            ]
+        }]
+    });
+
+    // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
+    Highcharts.chart('div_chart5', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'نمودار دمای یاتاقان'
+        },
+        subtitle: {
+            text: ''
+        },
+        exporting: {
+            enabled: false
+        },
+        xAxis: {
+            categories: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                '10', '11', '12'
+            ]
+        },
+        yAxis: {
+            title: {
+                text: 'دما (°C)'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'دما',
+            data: [
+                18.0, 18.2, 20.1, 17.9, 32.2, 36.4, 39.8, 37.4, 15.5, 40,
+                22.0, 12.8
+            ]
+        }]
+    });
+
+    // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
+    Highcharts.chart('div_chart6', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'نمودار دور موتور'
+        },
+        subtitle: {
+            text: ''
+        },
+        exporting: {
+            enabled: false
+        },
+        xAxis: {
+            categories: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                '10', '11', '12'
+            ]
+        },
+        yAxis: {
+            title: {
+                text: 'دور موتور (RPM)'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'دور موتور',
+            data: [
+                -5.9, -2.6, -0.6, 4.8, 10.2, 24.5, 17.6, 16.5, 12.0, 6.5,
+                2.0, -1.9
+            ]
+        }]
+    });
+
+    // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
+    Highcharts.chart('div_chart7', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'نمودار جریان موتور'
+        },
+        subtitle: {
+            text: ''
+        },
+        exporting: {
+            enabled: false
+        },
+        xAxis: {
+            categories: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                '10', '11', '12'
+            ]
+        },
+        yAxis: {
+            title: {
+                text: 'جریان (A)'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'ماه جاری',
+            data: [
+                26.0, 19, 13.1, 21.9, 32.2, 16.4, 39.8, 39.4, 35.5, 29.2,
+                22.0, 17.8
+            ]
         }, {
-            name: 'Construction',
-            data: [2019, 2189, 2150, 2217, 2175, 2257, 2344, 2176, 2186]
+            name: 'ماه قبل',
+            data: [
+                -2.9, -3.6, -0.6, 4.8, 10.2, 14.5, 17.6, 16.5, 12.0, 6.5,
+                2.0, -0.9
+            ]
         }]
     });
 

@@ -3,8 +3,8 @@ var data = {
     "nodeDataArray": [
         { "key": 1, "pos": "-770 100", "icon": "ballMer", "color": "blue", "text": "بالمیل مدولار", "description": "", "imgsrc": "" },
         { "key": 2, "pos": "-670 100", "icon": "ballMer", "color": "blue", "text": "بالمیل مدولار", "description": "", "imgsrc": "" },
-        { "key": 3, "pos": "-390 20", "icon": "ballMer", "color": "blue", "text": "بالمیل کانتینیوز 1", "description": "", "imgsrc": "" },
-        { "key": 4, "pos": "-390 170", "icon": "ballMer", "color": "red", "text": "بالمیل کانتینیوز 2", "description": "", "imgsrc": "" },
+        { "key": 3, "pos": "-490 20", "icon": "ballMer", "color": "blue", "text": "بالمیل کانتینیوز 1", "description": "", "imgsrc": "" },
+        { "key": 4, "pos": "-490 170", "icon": "ballMer", "color": "red", "text": "بالمیل کانتینیوز 2", "description": "", "imgsrc": "" },
         { "key": 5, "pos": "-150 -20", "icon": "ballMer", "color": "blue", "text": "بالمیل بچ 7", "description": "", "imgsrc": "" },
         { "key": 6, "pos": "-150 120", "icon": "ballMer", "color": "red", "text": "بالمیل بچ 6", "description": "", "imgsrc": "" },
         { "key": 7, "pos": "-150 250", "icon": "ballMer", "color": "blue", "text": "بالمیل بچ 5", "description": "", "imgsrc": "" },
@@ -40,6 +40,22 @@ var data = {
         { "from": 14, "to": 16 },
     ]
 }
+
+//$(document).ready(function (e) {
+//    $.get("/Devices/GetAll", function (res, status) {
+//        if (res.isSuccess) {
+
+//            var first = res.valueOrDefault.results
+//                .filter(p => p.parentId == null)[0];
+
+//            data.
+
+//            $.each(res.valueOrDefault.results, function (k, v) {
+//                console.log(v);
+//            });
+//        }
+//    });
+//});
 
 function init() {
     // Abstract colors
