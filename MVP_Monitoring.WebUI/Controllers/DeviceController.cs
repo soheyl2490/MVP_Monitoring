@@ -17,5 +17,16 @@ namespace MVP_Monitoring.WebUI.Controllers
             var Result = FluentResult(await Mediator.Send(query));
             return Result;
         }
+        [Route("Devices/GetDeviceDataList")]
+        [HttpGet]
+        public async Task<IActionResult> GeDeviceDataList(int deviceId)
+        {
+            GetDeviceDataListQuery query = new GetDeviceDataListQuery()
+            {
+                DeviceId=deviceId
+            };
+            var Result = FluentResult(await Mediator.Send(query));
+            return Result;
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace MVP_Monitoring.Application.Device
             //CreateMap<Domain.Entities.Group, UpdateGroupCommand>();
 
             CreateMap<Domain.Entities.Device, DeviceViewModel>();
+            CreateMap<Domain.Entities.Device, DeviceDataListViewModel>();
 
 
             //CreateMap<Domain.Entities.Group, InsertGroupCommand>();

@@ -1,4 +1,5 @@
-﻿using MVP_Monitoring.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MVP_Monitoring.Domain.Entities;
 using MVP_Monitoring.Domain.Repositories;
 using MVP_Monitoring.Infra.Data.Common.Context;
 using MVP_Monitoring.Infra.Data.Common.Repositories;
@@ -15,6 +16,16 @@ namespace MVP_Monitoring.Infra.Data.Devices.Repositories
     {
         public DeviceRepository(DataBaseContext databaseContext) : base(databaseContext)
         {
+        }
+        public virtual async Task<Device> GetDeviceDataAsync(long DeviceId)
+        {
+            var result =
+                await DatabaseContext.Devices
+                .Include(x => x.DeviceItems.OrderByDescending(x=>x.Id))
+                .ThenInclude(p => p.deviceItemParametersValues)
+                .Where(p => p.IsDeleted == false)
+                .FirstOrDefaultAsync();
+            return result;
         }
     }
 }

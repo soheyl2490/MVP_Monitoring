@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVP_Monitoring.Application.Device.Queries
+namespace MVP_Monitoring.Application.DeviceItem.Queries
 {
-    public class GetDeviceDataListQuery : IQuery<DeviceDataListViewModel>
+    public class GetDeviceItemIdsListQuery : IQuery<DeviceItemIdsListViewModel>
     {
-        public long DeviceId { get; set; }
+        
     }
 }

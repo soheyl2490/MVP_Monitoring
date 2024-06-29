@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DeviceItem\CommandHandler\" />
+    <Folder Include="DeviceItem\Commands\" />
     <Folder Include="Device\CommandHandler\" />
     <Folder Include="Device\Commands\" />
   </ItemGroup>

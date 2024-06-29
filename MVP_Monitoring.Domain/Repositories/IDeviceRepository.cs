@@ -11,6 +11,6 @@ namespace MVP_Monitoring.Domain.Repositories
 {
     public interface IDeviceRepository : IRepository<Device>
     {
-
+        Task<Device> GetDeviceDataAsync(long DeviceId);
     }
 }
