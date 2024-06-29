@@ -16,15 +16,7 @@ namespace MVP_Monitoring.Application.DeviceItemParametersValue.CommandHandler
         public async Task<Result> Handle(InsertDeviceItemParametersValueCommand request, CancellationToken cancellationToken)
         {
             var result = new Result();
-            try
-            {
-                var s = mapper.Map<MVP_Monitoring.Domain.Entities.DeviceItemParametersValue>(request);
-            }
-            catch (Exception ex)
-            {
 
-                throw;
-            }
             var entity = mapper.Map<MVP_Monitoring.Domain.Entities.DeviceItemParametersValue>(request);
             await unitOfWork.DeviceItemParametersValue.InsertAsync(entity);
 

@@ -43,7 +43,7 @@ namespace MVP_Monitoring.WebUI.Controllers
                 DeviceItemId = DeviceItemId,
                 Temperature = r.Next(Temperature_min, Temperature_Max),
                 RotationSpeed = r.Next(RotationSpeed_min, RotationSpeed_Max),
-                MotorFlow = r.Next(MotorFlow_min, MotorFlow_min),
+                MotorFlow = r.Next(MotorFlow_min, MotorFlow_Max),
                 BearingTemperature = r.Next(BearingTemperature_min, BearingTemperature_Max)
             };
             var Result = FluentResult(await Mediator.Send(insertDeviceItemParametersValueCommand));

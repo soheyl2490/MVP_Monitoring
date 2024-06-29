@@ -18,8 +18,6 @@ namespace MVP_Monitoring.Application.DeviceItemParametersValue.QueryHandler
         public async Task<Result<List<DeviceItemParametersValueViewModel>>> Handle(GetDeviceItemParametersValueListQuery request, CancellationToken cancellationToken)
         {
             var result = new Result<List<DeviceItemParametersValueViewModel>>();
-
-            
             IList<Domain.Entities.DeviceItemParametersValue> entity;
             entity = await unitOfWork.DeviceItemParametersValue
                 .GetAllAsync();
