@@ -80,7 +80,6 @@ namespace MVP_Monitoring.Infra.Data.Common.UnitOfWork
 
         public bool IsDisposed { get; protected set; }
 
-        public IDeviceItemRepository DeviceItem => throw new NotImplementedException();
 
         public void Dispose()
         {

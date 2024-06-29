@@ -12,7 +12,7 @@ namespace MVP_Monitoring.Domain.UnitOfWork
         {
             public IDeviceRepository Devices { get; }
 
-            public IDeviceItemRepository DeviceItem { get; }
+            public IDeviceItemRepository DeviceItems { get; }
 
             public IDeviceItemParametersValueRepository DeviceItemParametersValue { get; }
 

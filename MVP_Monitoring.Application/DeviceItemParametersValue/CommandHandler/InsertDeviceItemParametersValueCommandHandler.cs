@@ -18,7 +18,6 @@ namespace MVP_Monitoring.Application.DeviceItemParametersValue.CommandHandler
             var result = new Result();
 
             var entity = mapper.Map<MVP_Monitoring.Domain.Entities.DeviceItemParametersValue>(request);
-
             await unitOfWork.DeviceItemParametersValue.InsertAsync(entity);
 
             await unitOfWork.SaveAsync();

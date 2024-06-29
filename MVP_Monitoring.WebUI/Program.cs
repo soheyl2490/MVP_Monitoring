@@ -1,9 +1,29 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MVP_Monitoring.Infra.IoC;
+using MVP_Monitoring.WebUI;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 DependencyContainer.ConfigureServices(builder.Configuration, builder.Services);
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
+builder.Services.AddHostedService<TimedHostedService>();
+//builder.Services.ApplyResulation<ConsoleCronJob>(options =>
+//{
+//    options.CronExpression = "*/10 * * * * *";
+//    options.TimeZoneInfo = TimeZoneInfo.Local;
+//    options.CronFormat = Cronos.CronFormat.IncludeSeconds;
+//});
+//services.ApplyResulation<MyJob>(options =>
+//{
+//    options.CronExpression = "* * * * *";
+//    options.TimeZoneInfo = TimeZoneInfo.Local;
+//    options.CronFormat = Cronos.CronFormat.Standard;
+//});
 
 // Add services to the container.
 builder.Services.AddRazorPages();

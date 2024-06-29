@@ -15,12 +15,12 @@ namespace MVP_Monitoring.Domain.Entities
 
         public long? ParentId { get; set; }
 
+        public string Logo { get; set; }
 
         #region Relation
 
         public List<DeviceItem> DeviceItems { get; set; }
 
-        public string Logo { get; set; }
         #endregion
     }
 }

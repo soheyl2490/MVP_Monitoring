@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MVP_Monitoring.Domain.Repositories
 {
-    public interface IDeviceItemRepository : IRepository<DeviceItem>
+    public interface IDeviceItemParametersValueRepository : IRepository<DeviceItemParametersValue>
     {
 
     }
