@@ -12,13 +12,13 @@ $(document).ready(function (e) {
                     newVal = point.y - inc;
                 }
 
-                var audio = new Audio('/assets/cutoff405.mp3');
+                //var audio = new Audio('/assets/cutoff405.mp3');
 
-                if (newVal > 1500) {
-                    audio.play();
-                } else {
-                    audio.pause();
-                }
+                //if (newVal > 1500) {
+                //    audio.play();
+                //} else {
+                //    audio.pause();
+                //}
 
                 point.update(newVal);
             }
@@ -100,7 +100,24 @@ $(document).ready(function (e) {
             labels: {
                 enabled: true,
                 distance: 10
-            }
+            },
+            plotBands: [{
+                from: -30,
+                to: 30,
+                color: '#55BF3B', // green
+                thickness: 20,
+                borderRadius: '50%'
+            }, {
+                from: 30,
+                to: 50,
+                color: '#DDDF0D', // yellow
+                thickness: 20
+            }, {
+                from: 50,
+                to: 100,
+                color: '#be4b15', // red
+                thickness: 20
+            }]
         },
         plotOptions: {
             solidgauge: {
@@ -113,6 +130,7 @@ $(document).ready(function (e) {
             }
         }
     };
+
     $('#div_temperature').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: -30,
@@ -179,7 +197,7 @@ $(document).ready(function (e) {
             endAngle: 89.9,
             background: null,
             center: ['50%', '75%'],
-            size: '110%'
+            size: '140%'
         },
 
         // the value axis
@@ -237,7 +255,7 @@ $(document).ready(function (e) {
                     Highcharts.defaultOptions.title.style.color
                 ) || '#333333',
                 style: {
-                    fontSize: '16px'
+                    fontSize: '22px'
                 }
             },
             dial: {
@@ -293,8 +311,8 @@ $(document).ready(function (e) {
         },
 
         yAxis: [{
-            min: -20,
-            max: 6,
+            min: 0,
+            max: 20,
             minorTickPosition: 'outside',
             tickPosition: 'outside',
             labels: {
@@ -302,15 +320,16 @@ $(document).ready(function (e) {
                 distance: 20
             },
             plotBands: [{
-                from: 0,
-                to: 6,
+                from: 15,
+                to: 20,
                 color: '#C02316',
                 innerRadius: '100%',
                 outerRadius: '105%'
             }],
             pane: 0,
             title: {
-                y: -40
+                text: '<span style="font-size:22px">A</span>',
+                y: 60
             }
         }],
 
@@ -327,8 +346,20 @@ $(document).ready(function (e) {
 
         series: [{
             name: 'Channel A',
-            data: [-10],
-            yAxis: 0
+            data: [10],
+            yAxis: 0,
+            dataLabels: {
+                format: '{y} RPM',
+                borderWidth: 0,
+                color: (
+                    Highcharts.defaultOptions.title &&
+                    Highcharts.defaultOptions.title.style &&
+                    Highcharts.defaultOptions.title.style.color
+                ) || '#333333',
+                style: {
+                    fontSize: '22px'
+                }
+            },
         }]
     });
 
@@ -445,7 +476,7 @@ $(document).ready(function (e) {
                 enableMouseTracking: false
             }
         },
-        series: [ {
+        series: [{
             name: 'دما',
             data: [
                 -2.9, -3.6, -0.6, 4.8, 10.2, 14.5, 17.6, 16.5, 12.0, 6.5,

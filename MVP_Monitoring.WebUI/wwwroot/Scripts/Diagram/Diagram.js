@@ -1,43 +1,43 @@
 var data = {
     "class": "GraphLinksModel",
     "nodeDataArray": [
-        { "key": 1, "pos": "-770 100", "icon": "ballMer", "color": "blue", "text": "بالمیل مدولار", "description": "", "imgsrc": "" },
-        { "key": 2, "pos": "-670 100", "icon": "ballMer", "color": "blue", "text": "بالمیل مدولار", "description": "", "imgsrc": "" },
-        { "key": 3, "pos": "-490 20", "icon": "ballMer", "color": "blue", "text": "بالمیل کانتینیوز 1", "description": "", "imgsrc": "" },
+        { "key": 1, "pos": "-770 110", "icon": "ballMer", "color": "black", "text": "بالمیل مدولار", "description": "", "imgsrc": "" },
+        { "key": 2, "pos": "-670 100", "icon": "ballMer", "color": "black", "text": "بالمیل مدولار", "description": "", "imgsrc": "" },
+        { "key": 3, "pos": "-490 20", "icon": "ballMer", "color": "black", "text": "بالمیل کانتینیوز 1", "description": "", "imgsrc": "" },
         { "key": 4, "pos": "-490 170", "icon": "ballMer", "color": "red", "text": "بالمیل کانتینیوز 2", "description": "", "imgsrc": "" },
-        { "key": 5, "pos": "-150 -20", "icon": "ballMer", "color": "blue", "text": "بالمیل بچ 7", "description": "", "imgsrc": "" },
-        { "key": 6, "pos": "-150 120", "icon": "ballMer", "color": "red", "text": "بالمیل بچ 6", "description": "", "imgsrc": "" },
-        { "key": 7, "pos": "-150 250", "icon": "ballMer", "color": "blue", "text": "بالمیل بچ 5", "description": "", "imgsrc": "" },
-        { "key": 8, "pos": "-250 320", "icon": "ballMer", "color": "blue", "text": "بالمیل بچ 4", "description": "", "imgsrc": "" },
-        { "key": 9, "pos": "-250 180", "icon": "ballMer", "color": "blue", "text": "بالمیل بچ 3", "description": "", "imgsrc": "" },
-        { "key": 10, "pos": "-250 10", "icon": "ballMer", "color": "blue", "text": "بالمیل بچ 2", "description": "", "imgsrc": "" },
-        { "key": 11, "pos": "-250 -100", "icon": "ballMer", "color": "blue", "text": "بالمیل بچ 1", "description": "", "imgsrc": "" },
-        { "key": 12, "pos": "-50 250", "icon": "funnel", "color": "green", "text": "اسپری درایر A", "description": "", "imgsrc": "" },
-        { "key": 13, "pos": "-50 120", "icon": "funnel", "color": "blue", "text": "اسپری درایر B", "description": "", "imgsrc": "" },
-        { "key": 14, "pos": "-50 -20", "icon": "funnel", "color": "blue", "text": "اسپری درایر C", "description": "", "imgsrc": "" },
-        { "key": 15, "pos": "50 150", "icon": "factory", "color": "blue", "text": "سیلو خاک A", "description": "", "imgsrc": "" },
-        { "key": 16, "pos": "50 20", "icon": "factory", "color": "blue", "text": "سیلو خاک B&C", "description": "", "imgsrc": "" },
+        { "key": 5, "pos": "-200 -20", "icon": "ballMer", "color": "black", "text": "بالمیل بچ 7", "description": "", "imgsrc": "" },
+        { "key": 6, "pos": "-200 120", "icon": "ballMer", "color": "black", "text": "بالمیل بچ 6", "description": "", "imgsrc": "" },
+        { "key": 7, "pos": "-200 250", "icon": "ballMer", "color": "black", "text": "بالمیل بچ 5", "description": "", "imgsrc": "" },
+        { "key": 8, "pos": "-300 320", "icon": "ballMer", "color": "black", "text": "بالمیل بچ 4", "description": "", "imgsrc": "" },
+        { "key": 9, "pos": "-300 180", "icon": "ballMer", "color": "black", "text": "بالمیل بچ 3", "description": "", "imgsrc": "" },
+        { "key": 10, "pos": "-300 10", "icon": "ballMer", "color": "black", "text": "بالمیل بچ 2", "description": "", "imgsrc": "" },
+        { "key": 11, "pos": "-300 -100", "icon": "ballMer", "color": "black", "text": "بالمیل بچ 1", "description": "", "imgsrc": "" },
+        { "key": 12, "pos": "-50 250", "icon": "funnel", "color": "black", "text": "اسپری درایر A", "description": "", "imgsrc": "" },
+        { "key": 13, "pos": "-50 120", "icon": "funnel", "color": "black", "text": "اسپری درایر B", "description": "", "imgsrc": "" },
+        { "key": 14, "pos": "-50 -20", "icon": "funnel", "color": "black", "text": "اسپری درایر C", "description": "", "imgsrc": "" },
+        { "key": 15, "pos": "150 150", "icon": "factory", "color": "black", "text": "سیلو خاک A", "description": "", "imgsrc": "" },
+        { "key": 16, "pos": "150 20", "icon": "factory", "color": "black", "text": "سیلو خاک B&C", "description": "", "imgsrc": "" },
     ],
     "linkDataArray": [
-        { "from": 1, "to": 2 },
-        { "from": 2, "to": 3 },
-        { "from": 2, "to": 4 },
-        { "from": 3, "to": 11 },
-        { "from": 3, "to": 10 },
-        { "from": 4, "to": 8 },
-        { "from": 4, "to": 9 },
-        { "from": 11, "to": 5 },
-        { "from": 10, "to": 5 },
-        { "from": 10, "to": 6 },
-        { "from": 9, "to": 7 },
-        { "from": 8, "to": 7 },
-        { "from": 9, "to": 6 },
-        { "from": 5, "to": 14 },
-        { "from": 6, "to": 13 },
-        { "from": 7, "to": 12 },
-        { "from": 12, "to": 15 },
-        { "from": 13, "to": 16 },
-        { "from": 14, "to": 16 },
+        { "from": 1, "to": 2, color: "green" },
+        { "from": 2, "to": 3, color: "green" },
+        { "from": 2, "to": 4, color: "green" },
+        { "from": 3, "to": 11, color: "green" },
+        { "from": 3, "to": 10, color: "green" },
+        { "from": 4, "to": 8, color: "red" },
+        { "from": 4, "to": 9, color: "red" },
+        { "from": 11, "to": 5, color: "green" },
+        { "from": 10, "to": 5, color: "green" },
+        { "from": 10, "to": 6, color: "green" },
+        { "from": 9, "to": 7, color: "green" },
+        { "from": 8, "to": 7, color: "green" },
+        { "from": 9, "to": 6, color: "green" },
+        { "from": 5, "to": 14, color: "green" },
+        { "from": 6, "to": 13, color: "green" },
+        { "from": 7, "to": 12, color: "green" },
+        { "from": 12, "to": 15, color: "green" },
+        { "from": 13, "to": 16, color: "green" },
+        { "from": 14, "to": 16, color: "green" },
     ]
 }
 
@@ -61,7 +61,7 @@ function init() {
     // Abstract colors
     var Colors = {
         red: '#be4b15',
-        green: '#52ce60',
+        green: '#008000',
         blue: '#6ea5f8',
         lightred: '#fd8852',
         lightblue: '#afd4fe',
@@ -69,6 +69,7 @@ function init() {
         pink: '#faadc1',
         purple: '#d689ff',
         orange: '#f08c00',
+        black: "#050452"
     };
 
     var ColorNames = [];
@@ -121,7 +122,7 @@ function init() {
     myDiagram = new go.Diagram(
         'myDiagramDiv', // create a Diagram for the DIV HTML element
         {
-            initialAutoScale: go.AutoScale.Uniform, // scale to show all of the contents
+            //initialAutoScale: go.AutoScale.Uniform, // scale to show all of the contents
             ChangedSelection: onSelectionChanged, // view additional information
             maxSelectionCount: 1, // don't allow users to select more than one thing at a time
             isReadOnly: true,
